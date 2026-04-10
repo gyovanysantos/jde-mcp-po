@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+/* ── Custom theme tokens ─────────────────────────────────── */
+@theme {
+  --color-primary: #2563eb;
+  --color-primary-dark: #1d4ed8;
+  --color-sidebar: #1e293b;
+  --color-sidebar-text: #e2e8f0;
+  --color-success: #16a34a;
+  --color-warning: #d97706;
+  --color-danger: #dc2626;
+}
+
+/* ── Base styles ─────────────────────────────────────────── */
+body {
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+}

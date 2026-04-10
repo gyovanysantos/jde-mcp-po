@@ -110,6 +110,7 @@ Common status ranges (NXTR):
 Args:
   - orderNumber, supplierNumber, supplierName, itemNumber, branchPlant
   - orderType (default OP), statusFrom, statusTo
+  - orderDateFrom, orderDateTo: date range filter on TRDJ (YYYY-MM-DD)
   - includeHeader: also return F4301 header row
   - maxRows (default 50)`,
       inputSchema: JdePurchaseOrderInquirySchema,
@@ -150,11 +151,14 @@ Args:
         addFilter(filters, "DCTO", "EQUAL", params.orderType);
         addFilter(filters, "NXTR", "GREATER_EQUAL", params.statusFrom);
         addFilter(filters, "NXTR", "LESS_EQUAL", params.statusTo);
+        addFilter(filters, "TRDJ", "GREATER_EQUAL", params.orderDateFrom);
+        addFilter(filters, "TRDJ", "LESS_EQUAL", params.orderDateTo);
 
         const detailCols = [
           "DOCO", "DCTO", "KCOO", "LNID", "AN8", "SHAN", "LITM", "DSC1",
-          "UORG", "UREQ", "UOPN", "PRRC", "AEXP", "LNTY",
+          "UORG", "UREQ", "UOPN", "PRRC", "AEXP", "AOPN", "LNTY",
           "NXTR", "LTTR", "MCU", "TRDJ", "DRQJ", "PDDJ",
+          "CRCD", "FUP", "FREC", "UOM", "ABAN8",
         ];
 
         const detailResp = await queryTable({
@@ -176,7 +180,7 @@ Args:
         if (params.includeHeader && params.orderNumber) {
           const headerResp = await queryTable({
             tableName: "F4301",
-            columns: ["DOCO", "DCTO", "KCOO", "AN8", "SHAN", "MCU", "TRDJ", "DRQJ", "PDDJ", "OTOT", "HOLD", "NXTR", "VR01"],
+            columns: ["DOCO", "DCTO", "KCOO", "AN8", "SHAN", "MCU", "TRDJ", "DRQJ", "PDDJ", "OTOT", "HOLD", "NXTR", "VR01", "CRCD", "PY", "TXA1", "AN8R"],
             filters: [{ column: "DOCO", operator: "EQUAL", value: String(params.orderNumber) }],
             maxRows: 1,
           });

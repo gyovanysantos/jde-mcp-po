@@ -1,0 +1,396 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "description": "This is the JD Edwards Orchestration server.  Enabling you to Collect, Filter, Analyze, and Act on Real-Time Data.  \n\nYou can find out more about the JD Edwards Orchestrations at [LearnJDE](http://docs.oracle.com/cd/E84502_01/learnjde/orchestrator.html).",
+    "version": "EnterpriseOne 9.2.9.1",
+    "title": "JD Edwards EnterpriseOne"
+  },
+  "externalDocs": {
+    "description": "JD Edwards EnterpriseOne Orchestrator",
+    "url": "http://docs.oracle.com/cd/E84502_01/learnjde/orchestrator.html"
+  },
+  "servers": [
+    {
+      "url": "https://canevwls5.privatregsub.cantexvcn.oraclevcn.com:8003/jderest/v3/orchestrator"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Procurement",
+      "description": " "
+    }
+  ],
+  "paths": {
+    "/poApprovals": {
+      "post": {
+        "tags": [
+          "Procurement"
+        ],
+        "summary": "poApprovals",
+        "description": "Approve POs remotely",
+        "operationId": "postPoApprovals",
+        "requestBody": {
+          "description": "{}",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ORC_2602050003CUST"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ORC_2602050003CUST"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "jde-AIS-Auth",
+            "description": "Token",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "jde-AIS-Auth-Device",
+            "description": "Device Name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Execution",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ORC_2602050003CUST_Output"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ORC_2602050003CUST_Output"
+                }
+              },
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary",
+                  "description": "Output file is a .json file with orchestration output"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid Input"
+          },
+          "403": {
+            "description": "Authorization Failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ERROR"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ERROR"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Accept Header"
+          },
+          "415": {
+            "description": "Invalid Content-Type Header"
+          },
+          "444": {
+            "description": "Invalid Token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ERROR"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ERROR"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Failed to Process Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ERROR"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ERROR"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Procurement"
+        ],
+        "summary": "poApprovals",
+        "description": "Approve POs remotely",
+        "operationId": "getPoApprovals",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "jde-AIS-Auth",
+            "description": "Token",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "jde-AIS-Auth-Device",
+            "description": "Device Name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Execution",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ORC_2602050003CUST_Output"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ORC_2602050003CUST_Output"
+                }
+              },
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary",
+                  "description": "Output file is a .json file with orchestration output"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid Input"
+          },
+          "403": {
+            "description": "Authorization Failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ERROR"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ERROR"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid Accept Header"
+          },
+          "415": {
+            "description": "Invalid Content-Type Header"
+          },
+          "444": {
+            "description": "Invalid Token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ERROR"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ERROR"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Failed to Process Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ERROR"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ERROR"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    },
+    "schemas": {
+      "ORC_2602050003CUST": {
+        "type": "object",
+        "properties": {},
+        "xml": {
+          "name": "poApprovals"
+        }
+      },
+      "ORC_2602050003CUSTGrid_poList_RowSet": {
+        "type": "object",
+        "properties": {
+          "orderAmount": {
+            "type": "number",
+            "example": 0
+          },
+          "orderCompany": {
+            "type": "string",
+            "example": "string"
+          },
+          "orderDate": {
+            "type": "string",
+            "example": "2026-04-10",
+            "format": "date"
+          },
+          "orderNumber": {
+            "type": "number",
+            "example": 0
+          },
+          "orderRequestDate": {
+            "type": "string",
+            "example": "2026-04-10",
+            "format": "date"
+          },
+          "supplierNumber": {
+            "type": "number",
+            "example": 0
+          },
+          "supplierName": {
+            "type": "string",
+            "example": "string"
+          },
+          "orderType": {
+            "type": "string",
+            "example": "string"
+          },
+          "holdCode": {
+            "type": "string",
+            "example": "string"
+          },
+          "branchPlant": {
+            "type": "string",
+            "example": "string"
+          }
+        },
+        "xml": {
+          "name": "rowset"
+        }
+      },
+      "ORC_2602050003CUST_Output": {
+        "type": "object",
+        "properties": {
+          "poList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ORC_2602050003CUSTGrid_poList_RowSet"
+            }
+          }
+        }
+      },
+      "CONTINUED_ON_ERROR": {
+        "type": "object",
+        "properties": {
+          "step": {
+            "type": "string",
+            "example": "string"
+          },
+          "iteration": {
+            "type": "integer",
+            "example": 0
+          },
+          "message": {
+            "type": "string",
+            "example": "string"
+          },
+          "timeStamp": {
+            "type": "string",
+            "example": "2026-04-10T13:09:17.493-0500",
+            "format": "date-time"
+          },
+          "userDefinedErrorText": {
+            "type": "string",
+            "example": "string"
+          },
+          "type": {
+            "type": "string",
+            "example": "string"
+          },
+          "exceptionProcessResponse": {
+            "type": "object"
+          }
+        },
+        "xml": {
+          "name": "continuedOnError"
+        }
+      },
+      "ERROR": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "string"
+          },
+          "exception": {
+            "type": "string",
+            "example": "string"
+          },
+          "timestamp": {
+            "type": "string",
+            "example": "2026-04-10T13:09:17.493-0500",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}

@@ -82,5 +82,53 @@
       "success": "Success",
       "message": "Message"
     }
+  },
+
+  "pendingApprovals": {
+    "orchestrationName": "poApprovals",
+    "_description": "Lists all POs pending approval for the authenticated user. No inputs required — identity comes from Basic Auth. Returns poList[] with order summary.",
+    "inputMapping": {},
+    "outputMapping": {
+      "poList": "poList"
+    }
+  },
+
+  "approvalDetails": {
+    "orchestrationName": "poApprovalDetails",
+    "_description": "Retrieves detail lines for a specific PO pending approval. Used to review a PO before approving or rejecting.",
+    "inputMapping": {
+      "orderNumber":  "orderNumber",
+      "orderType":    "orderType",
+      "orderCompany": "orderCompany"
+    },
+    "outputMapping": {
+      "poApprovalDetails": "poApprovalDetails"
+    }
+  },
+
+  "approvePurchaseOrder": {
+    "orchestrationName": "approvePOMobile",
+    "_description": "Approves a PO via P43081. Takes only the order number — the authenticated user is recorded as the approver.",
+    "inputMapping": {
+      "orderNumber": "orderNumber"
+    },
+    "outputMapping": {
+      "orderNumber": "orderNumber",
+      "message":     "jde__simpleMessage"
+    }
+  },
+
+  "rejectPurchaseOrder": {
+    "orchestrationName": "rejectPOMobile",
+    "_description": "Rejects a PO via P43081 with an optional remark/reason and version override.",
+    "inputMapping": {
+      "orderNumber":     "orderNumber",
+      "remark":          "remark",
+      "P43081_Version":  "P43081_Version"
+    },
+    "outputMapping": {
+      "orderNumber": "orderNumber",
+      "message":     "jde__simpleMessage"
+    }
   }
 }

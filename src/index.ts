@@ -2,6 +2,17 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import express from "express";
+import cors from "cors";
+import path from "node:path";
+import fs from "node:fs";
+import { fileURLToPath } from "node:url";
+
+// REST API routes
+import authRoutes from "./routes/auth.js";
+import dashboardRoutes from "./routes/dashboard.js";
+import purchaseOrderRoutes from "./routes/purchase-orders.js";
+import chatRoutes from "./routes/chat.js";
+import { requireAuth } from "./middleware/auth.js";
 
 // Tool registrations — Dynamic Discovery layer (Layer 0)
 import { registerDiscoverTable, registerSearchTables } from "./tools/discovery.js";
@@ -25,6 +36,14 @@ import {
 
 // Tool registrations — Generic orchestration (escape hatch)
 import { registerOrchestrationTool } from "./tools/orchestration.js";
+
+// Tool registrations — PO Approval workflow
+import {
+  registerPendingApprovals,
+  registerApprovalDetails,
+  registerApprovePurchaseOrder,
+  registerRejectPurchaseOrder,
+} from "./tools/approval.js";
 
 // Services
 import { loadDictionary } from "./services/dictionary.js";
@@ -57,7 +76,13 @@ registerCancelPurchaseOrder(server);     // DELETE — jde_cancel_purchase_order
 registerSupplierLookup(server);          // jde_supplier_lookup
 registerItemCheck(server);               // jde_item_check
 
-// ── Layer 4: Generic (fallback) ───────────────────────────────
+// ── Layer 4: PO Approval workflow ─────────────────────────────
+registerPendingApprovals(server);        // jde_pending_approvals
+registerApprovalDetails(server);         // jde_approval_details
+registerApprovePurchaseOrder(server);    // jde_approve_purchase_order
+registerRejectPurchaseOrder(server);     // jde_reject_purchase_order
+
+// ── Layer 5: Generic (fallback) ───────────────────────────────
 registerQueryTool(server);               // jde_query_table
 registerOrchestrationTool(server);       // jde_call_orchestration
 
@@ -79,8 +104,16 @@ async function runHTTP(): Promise<void> {
   await loadDictionary();
 
   const app = express();
+
+  // CORS — allow Vite dev server during development
+  app.use(cors({
+    origin: process.env.CORS_ORIGIN || "http://localhost:5173",
+    credentials: true,
+  }));
+
   app.use(express.json());
 
+  // ── MCP endpoint (no web auth — uses its own transport) ─────
   app.post("/mcp", async (req, res) => {
     const transport = new StreamableHTTPServerTransport({
       sessionIdGenerator: undefined,
@@ -95,9 +128,34 @@ async function runHTTP(): Promise<void> {
     res.json({ status: "ok", server: "jde-mcp-po-server", version: "1.0.0" });
   });
 
+  // ── Public auth routes ──────────────────────────────────────
+  app.use("/api/auth", authRoutes);
+
+  // ── Protected REST API routes ───────────────────────────────
+  app.use("/api/dashboard", requireAuth, dashboardRoutes);
+  app.use("/api/purchase-orders", requireAuth, purchaseOrderRoutes);
+  app.use("/api/chat", requireAuth, chatRoutes);
+
+  // ── Serve frontend static files (production) ───────────────
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  const frontendDist = process.env.FRONTEND_DIR || path.join(__dirname, "../frontend/dist");
+  if (fs.existsSync(frontendDist)) {
+    app.use(express.static(frontendDist));
+    // SPA fallback — serve index.html for non-API routes
+    app.get("*", (_req, res) => {
+      res.sendFile(path.join(frontendDist, "index.html"));
+    });
+  }
+
   const port = parseInt(process.env.PORT || "3000", 10);
   app.listen(port, () => {
-    console.error(`jde-mcp-po-server v1.0.0 running on http://localhost:${port}/mcp`);
+    console.error(`jde-mcp-po-server v1.0.0 running on http://localhost:${port}`);
+    console.error(`  MCP endpoint: POST /mcp`);
+    console.error(`  REST API:     /api/*`);
+    console.error(`  Health:       GET /health`);
+    if (fs.existsSync(frontendDist)) {
+      console.error(`  Frontend:     serving from ${frontendDist}`);
+    }
   });
 }
 

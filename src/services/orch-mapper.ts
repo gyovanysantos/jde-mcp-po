@@ -26,6 +26,10 @@ interface OrchConfigFile {
   updatePurchaseOrderLine: OrchConfig;
   addPurchaseOrderLines: OrchConfig;
   cancelPurchaseOrder: OrchConfig;
+  pendingApprovals: OrchConfig;
+  approvalDetails: OrchConfig;
+  approvePurchaseOrder: OrchConfig;
+  rejectPurchaseOrder: OrchConfig;
 }
 
 let config: OrchConfigFile | null = null;
@@ -110,7 +114,11 @@ export type OrchOperation =
   | "createPurchaseOrder"
   | "updatePurchaseOrderLine"
   | "addPurchaseOrderLines"
-  | "cancelPurchaseOrder";
+  | "cancelPurchaseOrder"
+  | "pendingApprovals"
+  | "approvalDetails"
+  | "approvePurchaseOrder"
+  | "rejectPurchaseOrder";
 
 export async function getOrchestrationName(
   operation: OrchOperation

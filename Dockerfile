@@ -1,5 +1,5 @@
-# ── Stage 1: Build ─────────────────────────────────────────────
-FROM node:22-alpine AS builder
+# ── Stage 1: Build backend ─────────────────────────────────────
+FROM node:22-alpine AS backend-builder
 
 WORKDIR /app
 
@@ -12,7 +12,18 @@ COPY tsconfig.json ./
 COPY src/ ./src/
 RUN npm run build
 
-# ── Stage 2: Production ───────────────────────────────────────
+# ── Stage 2: Build frontend ───────────────────────────────────
+FROM node:22-alpine AS frontend-builder
+
+WORKDIR /app/frontend
+
+COPY frontend/package.json frontend/package-lock.json* ./
+RUN npm ci --ignore-scripts
+
+COPY frontend/ ./
+RUN npm run build
+
+# ── Stage 3: Production ───────────────────────────────────────
 FROM node:22-alpine AS production
 
 WORKDIR /app
@@ -24,8 +35,11 @@ RUN addgroup -S mcp && adduser -S mcp -G mcp
 COPY package.json package-lock.json* ./
 RUN npm ci --omit=dev --ignore-scripts && npm cache clean --force
 
-# Copy compiled output from builder
-COPY --from=builder /app/dist ./dist
+# Copy compiled backend from builder
+COPY --from=backend-builder /app/dist ./dist
+
+# Copy frontend build artifacts
+COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
 
 # Switch to non-root user
 USER mcp

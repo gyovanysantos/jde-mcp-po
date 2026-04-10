@@ -94,6 +94,10 @@ export const JdePurchaseOrderInquirySchema = z.object({
     .describe("Min next status (NXTR). E.g. '220' for open POs."),
   statusTo: z.string().optional()
     .describe("Max next status. Use '999' to include closed."),
+  orderDateFrom: z.string().optional()
+    .describe("Earliest order date (TRDJ) filter in YYYY-MM-DD format. E.g. '2026-01-01'."),
+  orderDateTo: z.string().optional()
+    .describe("Latest order date (TRDJ) filter in YYYY-MM-DD format. E.g. '2026-03-31'."),
   includeHeader: z.boolean().default(false)
     .describe("Also return the PO header (F4301) alongside detail lines."),
   maxRows: z.number().int().min(1).max(200).default(50)
@@ -214,6 +218,38 @@ export const JdeCallOrchestrationSchema = z.object({
 }).strict();
 
 // ──────────────────────────────────────────────────────────────
+// PO Approval Workflow
+// ──────────────────────────────────────────────────────────────
+
+export const JdePendingApprovalsSchema = z.object({
+  maxRows: z.number().int().min(1).max(500).default(50)
+    .describe("Max POs to return (default 50)"),
+}).strict();
+
+export const JdeApprovalDetailsSchema = z.object({
+  orderNumber: z.string().min(1)
+    .describe("Purchase order number (DOCO) to get approval details for. Required."),
+  orderType: z.string().default("OP")
+    .describe("Document type (default 'OP')"),
+  orderCompany: z.string().default("00001")
+    .describe("Order company (KCOO). Default '00001'."),
+}).strict();
+
+export const JdeApprovePurchaseOrderSchema = z.object({
+  orderNumber: z.string().min(1)
+    .describe("Purchase order number (DOCO) to approve. Required."),
+}).strict();
+
+export const JdeRejectPurchaseOrderSchema = z.object({
+  orderNumber: z.string().min(1)
+    .describe("Purchase order number (DOCO) to reject. Required."),
+  remark: z.string().optional()
+    .describe("Reason or remark for the rejection."),
+  P43081_Version: z.string().optional()
+    .describe("P43081 version override. Omit to use the orchestration default."),
+}).strict();
+
+// ──────────────────────────────────────────────────────────────
 // Layer 0 — Dynamic Discovery Tools
 // ──────────────────────────────────────────────────────────────
 
@@ -245,3 +281,7 @@ export type JdeItemCheckInput = z.infer<typeof JdeItemCheckSchema>;
 export type JdeCallOrchestrationInput = z.infer<typeof JdeCallOrchestrationSchema>;
 export type JdeDiscoverTableInput = z.infer<typeof JdeDiscoverTableSchema>;
 export type JdeSearchTablesInput = z.infer<typeof JdeSearchTablesSchema>;
+export type JdePendingApprovalsInput = z.infer<typeof JdePendingApprovalsSchema>;
+export type JdeApprovalDetailsInput = z.infer<typeof JdeApprovalDetailsSchema>;
+export type JdeApprovePurchaseOrderInput = z.infer<typeof JdeApprovePurchaseOrderSchema>;
+export type JdeRejectPurchaseOrderInput = z.infer<typeof JdeRejectPurchaseOrderSchema>;

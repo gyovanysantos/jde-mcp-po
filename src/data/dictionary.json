@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "lastUpdated": "2026-04-10",
   "scope": "Purchase Orders — full CRUD lifecycle",
   "tables": [
@@ -29,7 +29,18 @@
         { "alias": "MCU",   "name": "Branch/Plant",         "description": "Business unit / branch-plant",                 "dataType": "string", "example": "M30" },
         { "alias": "DRQJ",  "name": "Requested Date",       "description": "Requested delivery date (Julian)",             "dataType": "date",   "example": "2026-05-01" },
         { "alias": "PDDJ",  "name": "Promised Date",        "description": "Supplier promised delivery date (Julian)",     "dataType": "date",   "example": "2026-05-05" },
-        { "alias": "TRDJ",  "name": "Order Date",           "description": "Date the PO was entered (Julian)",             "dataType": "date",   "example": "2026-04-10" }
+        { "alias": "TRDJ",  "name": "Order Date",           "description": "Date the PO was entered (Julian)",             "dataType": "date",   "example": "2026-04-10" },
+        { "alias": "CRCD",  "name": "Currency Code",        "description": "Transaction currency code",                     "dataType": "string", "example": "USD" },
+        { "alias": "FUP",   "name": "Foreign Unit Price",   "description": "Unit cost in foreign (transaction) currency",   "dataType": "number", "example": "11.50" },
+        { "alias": "FREC",  "name": "Foreign Extended Cost", "description": "Extended cost in foreign currency",            "dataType": "number", "example": "5750.00" },
+        { "alias": "AOPN",  "name": "Open Amount",          "description": "Open (unreceived) amount in domestic currency", "dataType": "number", "example": "3825.00" },
+        { "alias": "UOM",   "name": "Unit of Measure",      "description": "Transaction unit of measure for this line",    "dataType": "string", "example": "EA" },
+        { "alias": "TAXCD", "name": "Tax Rate/Area",        "description": "Tax rate/area code applied to this line",      "dataType": "string", "example": "TX01" },
+        { "alias": "GLPT",  "name": "GL Category",          "description": "General Ledger posting category code",         "dataType": "string", "example": "IN30" },
+        { "alias": "ABAN8", "name": "Buyer Number",         "description": "Address book number of the buyer/purchaser",   "dataType": "number", "example": "9001" },
+        { "alias": "USER",  "name": "User ID",              "description": "User who last modified this record",           "dataType": "string", "example": "JDOE" },
+        { "alias": "PID",   "name": "Program ID",           "description": "Program that last updated this record",        "dataType": "string", "example": "P4310" },
+        { "alias": "UPMJ",  "name": "Date Updated",         "description": "Date the record was last updated (Julian)",    "dataType": "date",   "example": "2026-04-10" }
       ]
     },
     {
@@ -50,7 +61,14 @@
         { "alias": "OTOT",  "name": "Order Total",        "description": "Total domestic amount on the PO",              "dataType": "number", "example": "25000.00" },
         { "alias": "HOLD",  "name": "Hold Code",          "description": "Order hold code (blank = no hold)",            "dataType": "string", "example": "" },
         { "alias": "NXTR",  "name": "Next Status",        "description": "Next processing status for the header",        "dataType": "string", "example": "400" },
-        { "alias": "VR01",  "name": "Reference 1",        "description": "Supplier reference / quote number",            "dataType": "string", "example": "SUP-Q-2026-42" }
+        { "alias": "VR01",  "name": "Reference 1",        "description": "Supplier reference / quote number",            "dataType": "string", "example": "SUP-Q-2026-42" },
+        { "alias": "CRCD",  "name": "Currency Code",      "description": "Transaction currency code",                    "dataType": "string", "example": "USD" },
+        { "alias": "PY",    "name": "Payment Terms",      "description": "Payment terms code (e.g. N30, 2/10N30)",      "dataType": "string", "example": "N30" },
+        { "alias": "TXA1",  "name": "Tax Rate/Area",      "description": "Default tax rate/area for the order",          "dataType": "string", "example": "TX01" },
+        { "alias": "HDBY",  "name": "Hold By",            "description": "User who placed the hold (blank = no hold)",   "dataType": "string", "example": "JDOE" },
+        { "alias": "AN8R",  "name": "Remit-To Address",   "description": "Address book number for payment remittance",   "dataType": "number", "example": "5002" },
+        { "alias": "USER",  "name": "User ID",            "description": "User who last modified this record",           "dataType": "string", "example": "JDOE" },
+        { "alias": "UPMJ",  "name": "Date Updated",       "description": "Date the record was last updated (Julian)",    "dataType": "date",   "example": "2026-04-10" }
       ]
     },
     {
@@ -91,7 +109,38 @@
         { "alias": "ITM",   "name": "Short Item Number",  "description": "System short item number",                    "dataType": "number", "example": "60001" },
         { "alias": "LITM",  "name": "2nd Item Number",    "description": "User-facing item number",                     "dataType": "string", "example": "RAW-STEEL-01" },
         { "alias": "MCU",   "name": "Branch/Plant",       "description": "Business unit / branch-plant",                "dataType": "string", "example": "M30" },
-        { "alias": "OPC",   "name": "On Hand Quantity",   "description": "Primary quantity on hand",                    "dataType": "number", "example": "250" }
+        { "alias": "PQOH",  "name": "Qty On Hand",        "description": "Primary quantity on hand",                    "dataType": "number", "example": "250" },
+        { "alias": "PREQ",  "name": "Qty On PO",          "description": "Quantity on outstanding purchase orders",     "dataType": "number", "example": "500" },
+        { "alias": "BQTY",  "name": "Qty Backordered",    "description": "Quantity on backorder",                       "dataType": "number", "example": "50" },
+        { "alias": "SQOH",  "name": "Qty On SO",          "description": "Quantity on outstanding sales orders",        "dataType": "number", "example": "100" },
+        { "alias": "LOT1",  "name": "Lot/Serial",         "description": "Default lot or serial number",                "dataType": "string", "example": "LOT-2026-A" },
+        { "alias": "STKT",  "name": "Stocking Type",      "description": "M=Manufactured, P=Purchased, O=Obsolete",    "dataType": "string", "example": "P" }
+      ]
+    },
+    {
+      "tableName": "F43199",
+      "displayName": "Purchase Order Detail Ledger",
+      "description": "History of PO detail line transactions — receipts, reversals, and voucher matches. One row per receipt/transaction event per PO line.",
+      "functionalArea": "Purchase Orders",
+      "columns": [
+        { "alias": "DOCO",  "name": "Order Number",         "description": "Purchase order document number",                "dataType": "number", "example": "54321" },
+        { "alias": "DCTO",  "name": "Order Type",           "description": "Document type",                                 "dataType": "string", "example": "OP" },
+        { "alias": "KCOO",  "name": "Order Company",        "description": "Company that owns the order",                   "dataType": "string", "example": "00001" },
+        { "alias": "LNID",  "name": "Line Number",          "description": "PO line number (x1000)",                        "dataType": "number", "example": "1000" },
+        { "alias": "AN8",   "name": "Supplier Number",      "description": "Supplier address book number",                  "dataType": "number", "example": "5001" },
+        { "alias": "LITM",  "name": "Item Number",          "description": "User-facing item number",                       "dataType": "string", "example": "RAW-STEEL-01" },
+        { "alias": "ITM",   "name": "Short Item Number",    "description": "System short item number",                      "dataType": "number", "example": "60001" },
+        { "alias": "DSC1",  "name": "Item Description",     "description": "First line of item description",                "dataType": "string", "example": "Steel Bar 10mm" },
+        { "alias": "RVGD",  "name": "Receipt Date",         "description": "Date of the receipt transaction (Julian)",      "dataType": "date",   "example": "2026-05-10" },
+        { "alias": "UREC",  "name": "Qty Received",         "description": "Quantity received in this transaction",         "dataType": "number", "example": "100" },
+        { "alias": "AREC",  "name": "Amount Received",      "description": "Extended amount for this receipt",              "dataType": "number", "example": "1275.00" },
+        { "alias": "PRRC",  "name": "Unit Cost",            "description": "Unit cost at time of receipt",                  "dataType": "number", "example": "12.75" },
+        { "alias": "MCU",   "name": "Branch/Plant",         "description": "Receiving branch/plant",                        "dataType": "string", "example": "M30" },
+        { "alias": "NXTR",  "name": "Next Status",          "description": "Next processing status after this transaction", "dataType": "string", "example": "400" },
+        { "alias": "LTTR",  "name": "Last Status",          "description": "Status before this transaction",                "dataType": "string", "example": "300" },
+        { "alias": "MATC",  "name": "Match Type",           "description": "2-way or 3-way match indicator",                "dataType": "string", "example": "3" },
+        { "alias": "DOC",   "name": "Receipt Document",     "description": "Receipt/voucher document number",               "dataType": "number", "example": "98765" },
+        { "alias": "LOTN",  "name": "Lot/Serial Number",    "description": "Lot or serial number received",                 "dataType": "string", "example": "LOT-2026-A" }
       ]
     }
   ]
