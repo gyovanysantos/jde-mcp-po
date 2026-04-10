@@ -1,0 +1,86 @@
+{
+  "_comment": "Map each Purchase Order CRUD operation to its JDE Orchestration name and input field mappings. Update these to match the orchestrations built in YOUR Orchestrator Studio.",
+
+  "createPurchaseOrder": {
+    "orchestrationName": "ORCH_CreatePurchaseOrder",
+    "_description": "Creates a new PO header + detail lines via P4310. Should accept header fields and an array of line items.",
+    "inputMapping": {
+      "supplierNumber":  "Supplier",
+      "shipToNumber":    "ShipTo",
+      "branchPlant":     "BranchPlant",
+      "orderType":       "OrderType",
+      "orderDate":       "OrderDate",
+      "requestedDate":   "RequestedDate",
+      "supplierReference": "SupplierReference",
+      "lines":           "OrderLines",
+      "lines[].itemNumber":    "ItemNumber",
+      "lines[].quantity":      "Quantity",
+      "lines[].unitCost":      "UnitCost",
+      "lines[].lineType":      "LineType",
+      "lines[].requestedDate": "LineRequestedDate",
+      "lines[].branchPlant":   "LineBranchPlant"
+    },
+    "outputMapping": {
+      "orderNumber": "OrderNumber",
+      "orderType":   "OrderType",
+      "message":     "Message"
+    }
+  },
+
+  "updatePurchaseOrderLine": {
+    "orchestrationName": "ORCH_UpdatePOLine",
+    "_description": "Updates fields on an existing PO detail line. Uses P4310 EditLine form action.",
+    "inputMapping": {
+      "orderNumber":    "OrderNumber",
+      "orderType":      "OrderType",
+      "orderCompany":   "OrderCompany",
+      "lineNumber":     "LineNumber",
+      "quantity":       "Quantity",
+      "unitCost":       "UnitCost",
+      "requestedDate":  "RequestedDate",
+      "promisedDate":   "PromisedDate",
+      "branchPlant":    "BranchPlant"
+    },
+    "outputMapping": {
+      "success": "Success",
+      "message": "Message"
+    }
+  },
+
+  "addPurchaseOrderLines": {
+    "orchestrationName": "ORCH_AddPOLines",
+    "_description": "Adds new detail lines to an existing PO. Uses P4310 AddLine form action.",
+    "inputMapping": {
+      "orderNumber":          "OrderNumber",
+      "orderType":            "OrderType",
+      "orderCompany":         "OrderCompany",
+      "lines":                "NewLines",
+      "lines[].itemNumber":   "ItemNumber",
+      "lines[].quantity":     "Quantity",
+      "lines[].unitCost":     "UnitCost",
+      "lines[].lineType":     "LineType",
+      "lines[].requestedDate":"LineRequestedDate",
+      "lines[].branchPlant":  "LineBranchPlant"
+    },
+    "outputMapping": {
+      "linesAdded": "LinesAdded",
+      "message":    "Message"
+    }
+  },
+
+  "cancelPurchaseOrder": {
+    "orchestrationName": "ORCH_CancelPO",
+    "_description": "Cancels an entire PO or a specific line. Sets next status to 999 (closed) or applies cancel logic via P4310.",
+    "inputMapping": {
+      "orderNumber":   "OrderNumber",
+      "orderType":     "OrderType",
+      "orderCompany":  "OrderCompany",
+      "lineNumber":    "LineNumber",
+      "cancelReason":  "CancelReason"
+    },
+    "outputMapping": {
+      "success": "Success",
+      "message": "Message"
+    }
+  }
+}

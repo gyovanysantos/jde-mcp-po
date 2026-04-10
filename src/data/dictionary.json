@@ -1,0 +1,98 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-10",
+  "scope": "Purchase Orders — full CRUD lifecycle",
+  "tables": [
+    {
+      "tableName": "F4311",
+      "displayName": "Purchase Order Detail",
+      "description": "One row per purchase order detail line. Stores item, quantity, cost, status, and scheduling for each line on a purchase order.",
+      "functionalArea": "Purchase Orders",
+      "columns": [
+        { "alias": "DOCO",  "name": "Order Number",         "description": "Purchase order document number",                "dataType": "number", "example": "54321" },
+        { "alias": "DCTO",  "name": "Order Type",           "description": "Document type (OP=Purchase Order, OB=Blanket)", "dataType": "string", "example": "OP" },
+        { "alias": "KCOO",  "name": "Order Company",        "description": "Company that owns the order",                  "dataType": "string", "example": "00001" },
+        { "alias": "LNID",  "name": "Line Number",          "description": "Line number (x1000, e.g. 1000 = line 1)",      "dataType": "number", "example": "1000" },
+        { "alias": "AN8",   "name": "Supplier Number",      "description": "Address book number of the supplier",          "dataType": "number", "example": "5001" },
+        { "alias": "SHAN",  "name": "Ship To Number",       "description": "Address book number of receiving location",    "dataType": "number", "example": "100" },
+        { "alias": "LITM",  "name": "Item Number",          "description": "2nd item number (user-facing item ID)",        "dataType": "string", "example": "RAW-STEEL-01" },
+        { "alias": "ITM",   "name": "Short Item Number",    "description": "System-generated short item number",           "dataType": "number", "example": "60001" },
+        { "alias": "DSC1",  "name": "Item Description",     "description": "First line of item description",               "dataType": "string", "example": "Steel Bar 10mm" },
+        { "alias": "UORG",  "name": "Quantity Ordered",     "description": "Original quantity ordered (units)",             "dataType": "number", "example": "500" },
+        { "alias": "UREQ",  "name": "Quantity Received",    "description": "Quantity received so far",                      "dataType": "number", "example": "200" },
+        { "alias": "UOPN",  "name": "Quantity Open",        "description": "Remaining open quantity",                       "dataType": "number", "example": "300" },
+        { "alias": "PRRC",  "name": "Unit Cost",            "description": "Unit cost in domestic currency",                "dataType": "number", "example": "12.75" },
+        { "alias": "AEXP",  "name": "Extended Amount",      "description": "Extended cost (qty × unit cost)",               "dataType": "number", "example": "6375.00" },
+        { "alias": "LNTY",  "name": "Line Type",            "description": "Line type code (S=Stock, B=Bulk, N=Non-Stock)", "dataType": "string", "example": "S" },
+        { "alias": "NXTR",  "name": "Next Status",          "description": "Next processing status code",                  "dataType": "string", "example": "400" },
+        { "alias": "LTTR",  "name": "Last Status",          "description": "Last processing status completed",             "dataType": "string", "example": "280" },
+        { "alias": "MCU",   "name": "Branch/Plant",         "description": "Business unit / branch-plant",                 "dataType": "string", "example": "M30" },
+        { "alias": "DRQJ",  "name": "Requested Date",       "description": "Requested delivery date (Julian)",             "dataType": "date",   "example": "2026-05-01" },
+        { "alias": "PDDJ",  "name": "Promised Date",        "description": "Supplier promised delivery date (Julian)",     "dataType": "date",   "example": "2026-05-05" },
+        { "alias": "TRDJ",  "name": "Order Date",           "description": "Date the PO was entered (Julian)",             "dataType": "date",   "example": "2026-04-10" }
+      ]
+    },
+    {
+      "tableName": "F4301",
+      "displayName": "Purchase Order Header",
+      "description": "One row per purchase order header. Order-level info: supplier, dates, totals, hold codes, status.",
+      "functionalArea": "Purchase Orders",
+      "columns": [
+        { "alias": "DOCO",  "name": "Order Number",       "description": "Purchase order document number",                "dataType": "number", "example": "54321" },
+        { "alias": "DCTO",  "name": "Order Type",         "description": "Document type",                                "dataType": "string", "example": "OP" },
+        { "alias": "KCOO",  "name": "Order Company",      "description": "Company that owns the order",                  "dataType": "string", "example": "00001" },
+        { "alias": "AN8",   "name": "Supplier Number",    "description": "Supplier address book number",                 "dataType": "number", "example": "5001" },
+        { "alias": "SHAN",  "name": "Ship To Number",     "description": "Ship-to / receiving address book number",      "dataType": "number", "example": "100" },
+        { "alias": "MCU",   "name": "Branch/Plant",       "description": "Default branch/plant for the order",           "dataType": "string", "example": "M30" },
+        { "alias": "TRDJ",  "name": "Order Date",         "description": "Date the PO was entered",                      "dataType": "date",   "example": "2026-04-10" },
+        { "alias": "DRQJ",  "name": "Requested Date",     "description": "Requested delivery date",                      "dataType": "date",   "example": "2026-05-01" },
+        { "alias": "PDDJ",  "name": "Promised Date",      "description": "Supplier promised delivery date",              "dataType": "date",   "example": "2026-05-05" },
+        { "alias": "OTOT",  "name": "Order Total",        "description": "Total domestic amount on the PO",              "dataType": "number", "example": "25000.00" },
+        { "alias": "HOLD",  "name": "Hold Code",          "description": "Order hold code (blank = no hold)",            "dataType": "string", "example": "" },
+        { "alias": "NXTR",  "name": "Next Status",        "description": "Next processing status for the header",        "dataType": "string", "example": "400" },
+        { "alias": "VR01",  "name": "Reference 1",        "description": "Supplier reference / quote number",            "dataType": "string", "example": "SUP-Q-2026-42" }
+      ]
+    },
+    {
+      "tableName": "F0101",
+      "displayName": "Address Book Master",
+      "description": "Master address book. Used to validate and look up supplier numbers when creating/querying purchase orders.",
+      "functionalArea": "Address Book",
+      "columns": [
+        { "alias": "AN8",   "name": "Address Number",     "description": "Unique address book number",                   "dataType": "number", "example": "5001" },
+        { "alias": "ALPH",  "name": "Alpha Name",         "description": "Entity name (person or company)",              "dataType": "string", "example": "ACME Supplies" },
+        { "alias": "DC",    "name": "Description Comp",   "description": "Compressed search name",                      "dataType": "string", "example": "ACMESUPPLIES" },
+        { "alias": "AT1",   "name": "Search Type",        "description": "C=Customer, V=Supplier, E=Employee",          "dataType": "string", "example": "V" },
+        { "alias": "ADD1",  "name": "Address Line 1",     "description": "Primary address line",                         "dataType": "string", "example": "456 Industrial Ave" },
+        { "alias": "CTY1",  "name": "City",               "description": "City name",                                   "dataType": "string", "example": "Chicago" },
+        { "alias": "ADDS",  "name": "State",              "description": "State or province code",                       "dataType": "string", "example": "IL" },
+        { "alias": "CTR",   "name": "Country",            "description": "Country code",                                "dataType": "string", "example": "US" }
+      ]
+    },
+    {
+      "tableName": "F4101",
+      "displayName": "Item Master",
+      "description": "Master item table. Used to validate item numbers when adding lines to purchase orders.",
+      "functionalArea": "Inventory",
+      "columns": [
+        { "alias": "ITM",   "name": "Short Item Number",  "description": "System short item number",                    "dataType": "number", "example": "60001" },
+        { "alias": "LITM",  "name": "2nd Item Number",    "description": "User-facing item number",                     "dataType": "string", "example": "RAW-STEEL-01" },
+        { "alias": "DSC1",  "name": "Description",        "description": "Primary item description",                    "dataType": "string", "example": "Steel Bar 10mm" },
+        { "alias": "STKT",  "name": "Stocking Type",      "description": "M=Manufactured, P=Purchased",                "dataType": "string", "example": "P" },
+        { "alias": "UOM1",  "name": "Primary UOM",        "description": "Primary unit of measure",                     "dataType": "string", "example": "EA" }
+      ]
+    },
+    {
+      "tableName": "F41021",
+      "displayName": "Item Branch",
+      "description": "Item at branch/plant level. Used to check inventory availability when reviewing purchase order needs.",
+      "functionalArea": "Inventory",
+      "columns": [
+        { "alias": "ITM",   "name": "Short Item Number",  "description": "System short item number",                    "dataType": "number", "example": "60001" },
+        { "alias": "LITM",  "name": "2nd Item Number",    "description": "User-facing item number",                     "dataType": "string", "example": "RAW-STEEL-01" },
+        { "alias": "MCU",   "name": "Branch/Plant",       "description": "Business unit / branch-plant",                "dataType": "string", "example": "M30" },
+        { "alias": "OPC",   "name": "On Hand Quantity",   "description": "Primary quantity on hand",                    "dataType": "number", "example": "250" }
+      ]
+    }
+  ]
+}
