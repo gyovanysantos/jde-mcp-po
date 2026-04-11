@@ -1,0 +1,11 @@
+node_modules
+dist
+frontend/node_modules
+frontend/dist
+.git
+.env
+*.md
+.vscode
+tasks
+POapis
+foundry-agent

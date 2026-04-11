@@ -1,0 +1,10 @@
+# Foundry Agent Metadata
+# Managed by setup.ts — do not edit manually
+
+defaultEnvironment: dev
+
+environments:
+  dev:
+    projectEndpoint: "https://gsantos-hackaton26-resource.services.ai.azure.com/api/projects/gsantos-hackaton26"
+    agentName: "jde-po-agent"
+    model: "gpt-4.1"

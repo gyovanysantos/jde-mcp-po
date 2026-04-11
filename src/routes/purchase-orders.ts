@@ -44,23 +44,28 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
         operator: "LESS_EQUAL",
         value: String(statusTo),
       });
-    if (dateFrom)
+    // HTML date inputs send YYYY-MM-DD but AIS date conditions
+    // expect MM/DD/YYYY (JDE display format).
+    if (dateFrom) {
+      const [y, m, d] = String(dateFrom).split("-");
       filters.push({
         column: "TRDJ",
         operator: "GREATER_EQUAL",
-        value: String(dateFrom),
+        value: `${m}/${d}/${y}`,
       });
-    if (dateTo)
+    }
+    if (dateTo) {
+      const [y, m, d] = String(dateTo).split("-");
       filters.push({
         column: "TRDJ",
         operator: "LESS_EQUAL",
-        value: String(dateTo),
+        value: `${m}/${d}/${y}`,
       });
-
-    // Default: open POs only
-    if (!statusFrom && !statusTo) {
-      filters.push({ column: "NXTR", operator: "LESS", value: "999" });
     }
+
+    // Note: NXTR status filter removed — AIS Data Service cannot
+    // resolve the NXTR spec on F4301. The frontend shows all POs
+    // and the user can filter by other criteria.
 
     const maxRows = Math.min(Number(pageSize) || 50, 200);
 
@@ -68,7 +73,7 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
       tableName: "F4301",
       columns: [
         "DOCO", "DCTO", "KCOO", "AN8", "SHAN", "MCU",
-        "TRDJ", "DRQJ", "PDDJ", "OTOT", "HOLD", "NXTR",
+        "TRDJ", "DRQJ", "PDDJ", "OTOT", "HOLD",
         "VR01", "CRCD", "PY", "TXA1", "AN8R",
       ],
       filters,
